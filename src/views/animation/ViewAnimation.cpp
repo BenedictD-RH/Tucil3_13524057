@@ -1,4 +1,4 @@
-#include "../headers/views/animation/ViewAnimation.hpp"
+#include "../../headers/views/animation/ViewAnimation.hpp"
 
 ViewAnimation::ViewAnimation(const float fps, bool interuptable, function<void()> animationFunc,  function<void()> animationEndFunc) :
     fps(fps), interuptable(interuptable), playing(false), ended(false), frameProgress(0), 

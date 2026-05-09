@@ -1,5 +1,5 @@
-#include "../include/views/viewElement/View3D.hpp"
-#include "../include/views/animation/ViewAnimation.hpp"
+#include "../../headers/views/viewElement/View3D.hpp"
+#include "../../headers/views/animation/ViewAnimation.hpp"
 #include <iostream>
 #include <cstring>
 using namespace std;

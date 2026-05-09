@@ -1,4 +1,4 @@
-#include "views/viewElement/Entry.hpp"
+#include "../../headers/views/viewElement/Entry.hpp"
 
 Entry::Entry() : Interactable(), defaultText(""), fontSize(0), onEnterFunc([]() {}), selected(false) {}
 

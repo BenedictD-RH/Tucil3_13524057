@@ -1,5 +1,5 @@
-#include "../headers/views/viewElement/View2D.hpp"
-#include "../headers/views/animation/ViewAnimation.hpp"
+#include "../../headers/views/viewElement/View2D.hpp"
+#include "../../headers/views/animation/ViewAnimation.hpp"
 
 map<string, Font> View2D::fontMap;
 

@@ -1,5 +1,5 @@
-#include "../headers/views/animation/camera/View3DCamera.hpp"
-#include "../headers/views/animation/camera/CameraMovement.hpp"
+#include "../../../headers/views/animation/camera/View3DCamera.hpp"
+#include "../../../headers/views/animation/camera/CameraMovement.hpp"
 #include <set>
 
 View3DCamera::View3DCamera() : Camera3D({0}) {}

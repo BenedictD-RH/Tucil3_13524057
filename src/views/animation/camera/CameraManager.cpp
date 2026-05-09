@@ -1,5 +1,5 @@
-#include "../headers/views/animation/camera/CameraManager.hpp"
-#include "../headers/views/animation/camera/CameraMovement.hpp"
+#include "../../../headers/views/animation/camera/CameraManager.hpp"
+#include "../../../headers/views/animation/camera/CameraMovement.hpp"
 #include <set>
 
 

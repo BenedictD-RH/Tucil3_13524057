@@ -1,4 +1,4 @@
-#include "../headers/views/animation/camera/CameraMovement.hpp"
+#include "../../../headers/views/animation/camera/CameraMovement.hpp"
 
 CameraMovement::CameraMovement(View3DCamera &camera, const float fps, bool interuptable, function<void()> animationFunc, function<void()> animationEndFunc) : camera(camera), ViewAnimation(fps, interuptable, animationFunc, animationEndFunc)
 {

@@ -15,7 +15,16 @@ add_executable(${PROJECT_NAME} src/main.cpp
                                src/pathfinding/Graph.cpp
                                src/pathfinding/UCS.cpp
                                src/pathfinding/GBFS.cpp
-                               src/pathfinding/AStar.cpp)
+                               src/pathfinding/AStar.cpp
+                               src/views/GUI.cpp
+                               src/views/viewElement/View2D.cpp
+                               src/views/viewElement/View3D.cpp
+                               src/views/viewElement/Interactable.cpp
+                               src/views/viewElement/Entry.cpp
+                               src/views/animation/ViewAnimation.cpp
+                               src/views/animation/camera/CameraManager.cpp
+                               src/views/animation/camera/CameraMovement.cpp
+                               src/views/animation/camera/View3DCamera.cpp)
 
 target_link_libraries(${PROJECT_NAME} raylib)
 target_include_directories(${PROJECT_NAME} PUBLIC include)

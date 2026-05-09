@@ -2,62 +2,44 @@
 #include "headers/pathfinding/UCS.hpp"
 #include "headers/pathfinding/GBFS.hpp"
 #include "headers/pathfinding/AStar.hpp"
-#include "raylib.h"
+#include "headers/views/GUI.hpp"
 
 
 int main() {
-    Board b(0,0);
-    b.loadBoard("data/test.txt");
-    b.printBoardTiles();
-    b.printBoardCosts();
-    cout<<endl<<endl;
+    // Board b(0,0);
+    // b.loadBoard("data/test.txt");
+    // b.printBoardTiles();
+    // b.printBoardCosts();
+    // cout<<endl<<endl;
 
-    Heuristic* h = new CheckpointsAwayFromGoal(&b);
-    //UCS alg(&b);
-    AStar alg(&b, h);
-    //GBFS alg(&b, h);
-    alg.solve();
-    alg.printResults();
+    // Heuristic* h = new CheckpointsAwayFromGoal(&b);
+    // //UCS alg(&b);
+    // AStar alg(&b, h);
+    // //GBFS alg(&b, h);
+    // alg.solve();
+    // alg.printResults();
 
     // Graph g = constructPathfindingGraph(&b);
     // g.printGraph();
 
-    // const int screenWidth = 800;
-    // const int screenHeight = 800;
+    const int screenWidth = 1200;
+    const int screenHeight = 800;
 
-    // InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight, "Ice Slider Solver");
 
-    // SetTargetFPS(60);
+    SetTargetFPS(60);
+    GUI gui;
 
-    // while (!WindowShouldClose())
-    // {
-    //     BeginDrawing();
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        gui.render();
 
-    //         ClearBackground(RAYWHITE);
+        EndDrawing();
+    }
 
-    //         g.drawEdges(1);
-    //         //g.drawNodes();
-
-    //     EndDrawing();
-    // }
-
-    // CloseWindow();
+    CloseWindow();
 
 
-
-    // while(true) {
-    //     string s;
-    //     cin>>s;
-    //     Block *blockState = b.controlBlock(s);
-    //     b.printBoardTiles();
-    //     cout<<"Current Cost: "<<blockState->getTotalCost()<<endl;
-    //     if (!blockState->isOngoing()) {
-    //         if (blockState->isGameOver()) {
-    //             cout<<"GAME OVER"<<endl;
-    //         } else {
-    //             cout<<"GOAL_REACHED"<<endl;
-    //         }
-    //         break;
-    //     };
-    // }
 }

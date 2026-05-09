@@ -14,10 +14,14 @@ class Board {
         vector<NumberTile*> numberTiles;
     public:
         Board(const int row, const int col);
+        const int getRow() const;
+        const int getCol() const;
         Tile* tileAt(const int x, const int y) const;
         Tile* getStartTile() const;
         Tile* getGoalTile() const;
         Block* getBlockState() const;
+        NumberTile* getNumberTile(const int num) const;
+        NumberTile* getNextNumberTile(NumberTile*) const;
         NumberTile* getFinalNumberTile() const;
         const bool isOutOfBounds(const int x, const int y) const;
         void loadBoard(const string filename);

@@ -10,18 +10,18 @@ class Node {
     private:
         Tile* tile;
         NumberTile* lastNumVisited;
-        vector<Edge*> succEdges;
+        map<char, Edge*> succEdges;
         vector<Edge*> predEdges;
     public :
         Node(Tile* tile, NumberTile* lastNumTile);
         Tile* getTile() const;
         NumberTile* getLastNumVisited() const;
-        vector<Edge*> getSuccEdges() const;
+        map<char, Edge*> getSuccEdges() const;
         vector<Edge*> getPredEdges() const;
-        Edge* succEdgeAt(const int idx) const;
+        Edge* succEdgeAt(const char dir) const;
+        Node* succNodeAt(const char dir) const;
         Edge* predEdgeAt(const int idx) const;
-        string getNodeKey() const;
-        void addSuccEdge(Edge* edge);
+        void addSuccEdge(const char dir, Edge* edge);
         void addPredEdge(Edge* edge);
         void printNode();
 };
@@ -29,10 +29,12 @@ class Node {
 class Edge {
     private:
         int cost;
+        const char dir;
         Node* pred;
         Node* succ;  
     public:
-        Edge(Node* pred, Node* succ, const int cost);
+        Edge(Node* pred, Node* succ, const int cost, const char dir);
+        const char getEdgeDir() const;
         const int getCost() const;
         Node* getPred() const;
         Node* getSucc() const;
@@ -51,6 +53,8 @@ class Graph {
         void addNode(Node* node);
         void addEdge(Edge* edge);
         Node* getNode(Tile* tile, NumberTile* numTile) const;
+        map<pair<Tile*, NumberTile*>, Node*> getNodeList() const;
+        map<pair<Node*, Node*>, Edge*> getEdgeList() const;
         void printGraph() const;
         void drawNodes(int num);
         void drawEdges(int num);
@@ -58,5 +62,4 @@ class Graph {
 
 
 Graph constructPathfindingGraph(Board *board);
-
 

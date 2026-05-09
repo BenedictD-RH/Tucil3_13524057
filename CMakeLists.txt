@@ -10,7 +10,12 @@ add_executable(${PROJECT_NAME} src/main.cpp
                                src/game_modules/Board.cpp
                                src/game_modules/Block.cpp
                                src/game_modules/Tile.cpp
-                               src/pathfinding/Graph.cpp)
+                               src/pathfinding/Algorithm.cpp
+                               src/pathfinding/Heuristic.cpp
+                               src/pathfinding/Graph.cpp
+                               src/pathfinding/UCS.cpp
+                               src/pathfinding/GBFS.cpp
+                               src/pathfinding/AStar.cpp)
 
 target_link_libraries(${PROJECT_NAME} raylib)
 target_include_directories(${PROJECT_NAME} PUBLIC include)

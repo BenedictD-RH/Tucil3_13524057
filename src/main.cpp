@@ -1,5 +1,7 @@
 #include "headers/game_modules/Board.hpp"
-#include "headers/pathfinding/Graph.hpp"
+#include "headers/pathfinding/UCS.hpp"
+#include "headers/pathfinding/GBFS.hpp"
+#include "headers/pathfinding/AStar.hpp"
 #include "raylib.h"
 
 
@@ -10,29 +12,36 @@ int main() {
     b.printBoardCosts();
     cout<<endl<<endl;
 
-    Graph g = constructPathfindingGraph(&b);
-    g.printGraph();
+    Heuristic* h = new CheckpointsAwayFromGoal(&b);
+    //UCS alg(&b);
+    AStar alg(&b, h);
+    //GBFS alg(&b, h);
+    alg.solve();
+    alg.printResults();
 
-    const int screenWidth = 800;
-    const int screenHeight = 800;
+    // Graph g = constructPathfindingGraph(&b);
+    // g.printGraph();
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    // const int screenWidth = 800;
+    // const int screenHeight = 800;
 
-    SetTargetFPS(60);
+    // InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
+    // SetTargetFPS(60);
 
-            ClearBackground(RAYWHITE);
+    // while (!WindowShouldClose())
+    // {
+    //     BeginDrawing();
 
-            g.drawEdges(1);
-            //g.drawNodes();
+    //         ClearBackground(RAYWHITE);
 
-        EndDrawing();
-    }
+    //         g.drawEdges(1);
+    //         //g.drawNodes();
 
-    CloseWindow();
+    //     EndDrawing();
+    // }
+
+    // CloseWindow();
 
 
 

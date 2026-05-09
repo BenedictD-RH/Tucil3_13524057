@@ -4,17 +4,18 @@ Node::Node(Tile* tile, NumberTile* lastNumTile) : tile(tile), lastNumVisited(las
 
 Tile* Node::getTile() const { return tile; }
 NumberTile* Node::getLastNumVisited() const { return lastNumVisited; }
-vector<Edge*> Node::getSuccEdges() const { return succEdges; }
+map<char, Edge*> Node::getSuccEdges() const { return succEdges; }
 vector<Edge*> Node::getPredEdges() const { return predEdges; }
-Edge* Node::succEdgeAt(const int idx) const { return succEdges.at(idx); }
+Edge* Node::succEdgeAt(const char dir) const { return succEdges.at(dir); }
+Node* Node::succNodeAt(const char dir) const { return succEdges.at(dir)->getSucc(); }
 Edge* Node::predEdgeAt(const int idx) const { return predEdges.at(idx); }
 
 void Node::addPredEdge(Edge* edge) {
     predEdges.push_back(edge);
 }
 
-void Node::addSuccEdge(Edge* edge) {
-    succEdges.push_back(edge);
+void Node::addSuccEdge(const char dir, Edge* edge) {
+    succEdges[dir] = edge;
 }
 
 void Node::printNode() {
@@ -26,11 +27,12 @@ void Node::printNode() {
     }
 }
 
-Edge::Edge(Node* pred, Node* succ, const int cost) : pred(pred), succ(succ), cost(cost) {
-    pred->addSuccEdge(this);
+Edge::Edge(Node* pred, Node* succ, const int cost, const char dir) : pred(pred), succ(succ), cost(cost), dir(dir) {
+    pred->addSuccEdge(dir, this);
     succ->addPredEdge(this);
 }
 
+const char Edge::getEdgeDir() const { return dir; }
 const int Edge::getCost() const { return cost; }
 Node* Edge::getPred() const { return pred; }
 Node* Edge::getSucc() const { return succ; }
@@ -55,6 +57,12 @@ Node* Graph::getNode(Tile* tile, NumberTile* lastNumTile) const {
     if (nodeList.find({tile, lastNumTile}) == nodeList.end()) return nullptr;
     return nodeList.at({tile, lastNumTile});
 }
+map<pair<Tile*, NumberTile*>, Node*> Graph::getNodeList() const {
+    return nodeList;
+}
+map<pair<Node*, Node*>, Edge*> Graph::getEdgeList() const {
+    return edgeList;
+}
 
 void Graph::printGraph() const {
     cout<<"NODES: "<<endl;
@@ -66,7 +74,7 @@ void Graph::printGraph() const {
     cout<<"EDGES: "<<endl;
     for (auto pair : edgeList) {
         pair.first.first->printNode();
-        cout<<" --> ";
+        cout<<" -"<<pair.second->getCost()<<"-> ";
         pair.first.second->printNode();
         cout<<endl;
     }
@@ -119,7 +127,7 @@ void constructGraphPath(Graph* g, Node* currNode, const string currPath, Board *
                 constructGraphPath(g, nextNode, currPath + dir, board);
             }
             
-            Edge* nextEdge = new Edge(currNode, nextNode, nextCost);
+            Edge* nextEdge = new Edge(currNode, nextNode, nextCost, dir);
             g->addEdge(nextEdge);
             
         }

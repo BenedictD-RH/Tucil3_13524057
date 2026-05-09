@@ -15,6 +15,8 @@ Board::Board(const int row, const int col) : row(row), col(col), block(nullptr),
     }
 }
 
+const int Board::getRow() const { return row; }
+const int Board::getCol() const { return col; }
 Tile* Board::getStartTile() const { return startTile; }
 Tile* Board::getGoalTile() const { return goalTile; }
 Tile* Board::tileAt(const int x, const int y) const { 
@@ -29,9 +31,26 @@ const bool Board::isOutOfBounds(const int x, const int y) const {
     return x < 0 || x >= col || y < 0 || y >= row;
 }
 
+NumberTile* Board::getNumberTile(const int num) const { 
+    auto it = find_if(numberTiles.begin(), numberTiles.end(), [num](NumberTile* numtile) {
+        return numtile->getNumber() == num;
+    });
+    if (it == numberTiles.end()) return nullptr;
+    return *it;
+}
+
+NumberTile* Board::getNextNumberTile(NumberTile* numTile) const { 
+    if (numTile == nullptr) {
+        return getNumberTile(0);
+    } else if (numTile == getFinalNumberTile()) {
+        return nullptr;
+    } else {
+        return getNumberTile(numTile->getNumber() + 1);
+    }
+}
+
 NumberTile* Board::getFinalNumberTile() const { 
-    if (numberTiles.size() == 0) return nullptr;
-    return numberTiles.back();
+    return getNumberTile(numberTiles.size() - 1);
 }
 
 void Board::resetBlock() {
@@ -64,20 +83,18 @@ void Board::loadBoard(const string filename) {
     if (file.is_open()) {
         int k = 0;
         getline(file, line);
-        for (int i = 0; i < line.length(); i++) {
-            if (line.at(i) != ' ' && line.at(i) != '\t') {
-                if (line.at(i) >= '1' && line.at(i) <= '9') {
+        string token;
+        stringstream ss(line);
+        while(getline(ss, token, ' ')) {
+            if (token != "") {
+                try {
                     if (k == 0) {
-                        newB.row = line.at(i) - 48;
-                        k++;
+                        newB.row = stoi(token);
                     } else if (k == 1) {
-                        newB.col = line.at(i) - 48;
-                        k++;
-                    } else {
-                        cout<<"Error: Invalid row/column amount";
-                        return;
+                        newB.col = stoi(token);
                     }
-                } else {
+                    k++;
+                } catch (invalid_argument e) {
                     cout<<"Error: Invalid row/column amount"<<endl;
                     return;
                 }
@@ -143,7 +160,12 @@ void Board::loadBoard(const string filename) {
             while(getline(ss, token, ' ')) {
                 if (token != "") {
                     try {
-                        newB.tiles[j][i]->setCost(stoi(token));
+                        int val = stoi(token);
+                        if (val < 0) {
+                            cout<<"Error: Invalid cost value"<<endl;
+                            return;
+                        }
+                        newB.tiles[j][i]->setCost(val);
                         i++;
                     } catch (invalid_argument e) {
                         cout<<"Error: Invalid cost value"<<endl;

@@ -30,6 +30,7 @@ class Path {
 class Algorithm {
     protected:
         int totalIterations;
+        chrono::time_point<chrono::steady_clock> start;
         long timeElapsed;
         bool solutionFound;
         Path* solutionPath;

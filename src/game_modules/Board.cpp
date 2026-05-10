@@ -58,12 +58,117 @@ NumberTile* Board::getFinalNumberTile() const {
     return getNumberTile(numberTiles.size() - 1);
 }
 
+const bool Board::areNumberTilesValid() const {
+    int lastNumber = -1;
+    for (NumberTile* numTile : numberTiles) {
+        if (numTile->getNumber() != lastNumber + 1) return false;
+        lastNumber = numTile->getNumber();
+    }
+    return true;
+}
+
+const int Board::getEarliestMissingNumber() const {
+    if (numberTiles.size() == 0) return 0;
+    int i = 0;
+    for (NumberTile* numTile : numberTiles) {
+        if (numTile->getNumber() != i) return i;
+        i++;
+    }
+    return -1;
+}
+
+const bool Board::isBoardValid() const {
+    return startTile != nullptr && block != nullptr && goalTile != nullptr && areNumberTilesValid();
+}
+
+void Board::setBoardDim(const int row, const int col) {
+    if (startTile != nullptr) {
+        if (startTile->getY() >= row || startTile->getX() >= col) {
+            startTile = nullptr;
+            delete block;
+            block = nullptr;
+        }
+    }
+    if (goalTile != nullptr) {
+        if (goalTile->getY() >= row || goalTile->getX() >= col) goalTile = nullptr;
+    }
+    numberTiles.erase(remove_if(numberTiles.begin(), numberTiles.end(), [row, col](NumberTile* numTile){
+        return numTile->getY() >= row || numTile->getX() >= col;
+    }));
+    for (vector<Tile*> tileRow : tiles) {
+        for (Tile* tile : tileRow) {
+            if (tile->getX() >= col || tile->getY() >= row) {
+                delete tile;
+            }
+        }
+    }
+
+    vector<vector<Tile*>> newTiles;
+    for (int i = 0; i < row; i++) {
+        vector<Tile*> tileRow;
+        for (int j = 0; j < col; j++) {
+            if (i >= this->row || j >= this->col) {
+                tileRow.push_back(new UnpassableTile(j, i));
+            } else {
+                tileRow.push_back(tileAt(j, i));
+            }
+        }
+        newTiles.push_back(tileRow);
+    }
+    tiles = newTiles;
+    this->row = row;
+    this->col = col;
+}
+
+void Board::setTile(Tile* tile) {
+    if (startTile != nullptr) {
+        if (startTile->getX() == tile->getX() && startTile->getY() == tile->getY()) {
+            startTile = nullptr;
+            delete block;
+            block = nullptr;
+        }
+    }
+    if (goalTile != nullptr) {
+        if (goalTile->getX() == tile->getX() && goalTile->getY() == tile->getY()) {
+            goalTile = nullptr;
+        }
+    }
+    numberTiles.erase(remove_if(numberTiles.begin(), numberTiles.end(), [tile](NumberTile* numTile){
+        return (numTile->getX() == tile->getX() && numTile->getY() == tile->getY());
+    }));
+
+    delete tiles.at(tile->getY()).at(tile->getX());
+    tiles.at(tile->getY()).at(tile->getX()) = tile;
+    if (tile->getType() == START_TILE) {
+        if (startTile != nullptr) {
+            startTile->setType(PASSABLE_TILE);
+            block->moveBlockTo(tile->getX(), tile->getY());
+        }
+        startTile = tile;
+        if (block == nullptr) block = new Block(this);
+    } else if (tile->getType() == GOAL_TILE) {
+        if (goalTile != nullptr) {
+            goalTile->setType(PASSABLE_TILE);
+        }
+        goalTile = tile;
+    } else if (tile->getType() == NUMBER_TILE) {
+        NumberTile* num = static_cast<NumberTile*>(tile);
+        numberTiles.push_back(num);
+        sort(numberTiles.begin(), numberTiles.end(), [](const NumberTile* t1, const NumberTile* t2){
+            return t1->getNumber() < t2->getNumber();
+        });
+    }
+}
+
+
 void Board::resetBlock() {
-    block->moveBlockTo(startTile->getX(), startTile->getY());
-    block->setCost(0);
-    block->setLastMoveDir(NONE);
-    block->setLastNumberTileVisited(nullptr);
-    block->setGameState(ONGOING);
+    if (block != nullptr) {
+        block->moveBlockTo(startTile->getX(), startTile->getY());
+        block->setCost(0);
+        block->setLastMoveDir(NONE);
+        block->setLastNumberTileVisited(nullptr);
+        block->setGameState(ONGOING);
+    }
 }
 
 Block* Board::controlBlock(const string path) {
@@ -81,7 +186,7 @@ Block* Board::controlBlock(const string path) {
     return block;
 }
 
-void Board::loadBoard(const string filename) {
+bool Board::loadBoard(const string filename) {
     ifstream file(filename);
     string line;
     Board newB(0,0);
@@ -101,20 +206,20 @@ void Board::loadBoard(const string filename) {
                     k++;
                 } catch (invalid_argument e) {
                     cout<<"Error: Invalid row/column amount"<<endl;
-                    return;
+                    return false;
                 }
             }
         }
         if (k < 2) {
             cout<<"Error: Invalid row/column amount"<<endl;
-            return;
+            return false;
         }
 
         int j = 0;
         while(!file.eof() && j < newB.row) {
             getline(file, line);
             if (newB.col != line.length()) {
-                return;
+                return false;
             }
             vector<Tile*> tileRow;
             for (int i = 0; i < line.length(); i++) {
@@ -144,7 +249,7 @@ void Board::loadBoard(const string filename) {
                             tile = numtile;
                         } else {
                             cout<<"Error: Invalid Symbol! : "<<line.at(i)<<endl;
-                            return;
+                            return false;
                         }
                 }
                 tileRow.push_back(tile);
@@ -154,7 +259,7 @@ void Board::loadBoard(const string filename) {
         }
         if (j != newB.row) {
             cout<<"Error: Invalid row amount"<<endl;
-            return;
+            return false;
         }
         j = 0;
         while(!file.eof() && j < newB.row) {
@@ -168,32 +273,33 @@ void Board::loadBoard(const string filename) {
                         int val = stoi(token);
                         if (val < 0) {
                             cout<<"Error: Invalid cost value"<<endl;
-                            return;
+                            return false;
                         }
                         newB.tiles[j][i]->setCost(val);
                         i++;
                     } catch (invalid_argument e) {
                         cout<<"Error: Invalid cost value"<<endl;
-                        return;
+                        return false;
                     }
                 }
             }
             if (i != newB.col) {
                 cout<<"Error: Invalid column amount :"<<i<<endl;
-                return;
+                return false;
             }
             j++;
         }
         if (j != newB.row) {
             cout<<"Error: Invalid row amount"<<endl;
-            return;
+            return false;
         }
     }
     sort(newB.numberTiles.begin(), newB.numberTiles.end(), [](const NumberTile* t1, const NumberTile* t2){
         return t1->getNumber() < t2->getNumber();
     });
     *this = newB;
-    block = new Block(this);
+    if (startTile != nullptr) block = new Block(this);
+    return true;
 }
 
 void Board::printBoardTiles() const {

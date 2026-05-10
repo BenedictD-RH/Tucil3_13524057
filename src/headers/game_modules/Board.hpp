@@ -24,8 +24,13 @@ class Board {
         NumberTile* getNumberTile(const int num) const;
         NumberTile* getNextNumberTile(NumberTile*) const;
         NumberTile* getFinalNumberTile() const;
+        const bool areNumberTilesValid() const;
+        const int getEarliestMissingNumber() const;
         const bool isOutOfBounds(const int x, const int y) const;
-        void loadBoard(const string filename);
+        const bool isBoardValid() const;
+        bool loadBoard(const string filename);
+        void setBoardDim(const int row, const int col);
+        void setTile(Tile* tile);
         void resetBlock();
         Block* controlBlock(const string path);
         void printBoardTiles() const;

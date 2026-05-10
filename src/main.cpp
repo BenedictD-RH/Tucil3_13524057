@@ -1,13 +1,10 @@
 #include "headers/game_modules/Board.hpp"
-#include "headers/pathfinding/UCS.hpp"
-#include "headers/pathfinding/GBFS.hpp"
-#include "headers/pathfinding/AStar.hpp"
 #include "headers/views/GUI.hpp"
 
 
 int main() {
     Board b(0,0);
-    b.loadBoard("data/test.txt");
+    b.loadBoard("");
     // b.printBoardTiles();
     // b.printBoardCosts();
     // cout<<endl<<endl;
@@ -22,22 +19,21 @@ int main() {
     // Graph g = constructPathfindingGraph(&b);
     // g.printGraph();
 
-    const int screenWidth = 1200;
-    const int screenHeight = 800;
+    const int screenWidth = 1600;
+    const int screenHeight = 900;
     SetTraceLogLevel(LOG_NONE);
     InitWindow(screenWidth, screenHeight, "Ice Slider Solver");
-    
+    View2D::addFont("Futura", "assets/Futura Heavy.otf");
     SetTargetFPS(60);
     GUI gui;
     gui.loadBoard(b);
-    gui.setBoardSolution("LURDRDLULUDRDLUDRULDRURDLDRUDLULDRDLDRULURDL");
     while (!WindowShouldClose())
     {
         gui.update();
         BeginDrawing();
         ClearBackground(RAYWHITE);
         gui.render();
-
+        DrawFPS(10,10);
         EndDrawing();
     }
 

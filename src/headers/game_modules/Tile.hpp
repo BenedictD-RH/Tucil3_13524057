@@ -28,8 +28,7 @@ class Tile {
         const int getY() const;
         const Vector2 getRenderPos() const;
         const TileType getType() const;
-        const bool isNextTo(const Tile& tile) const;
-        const bool isNextTo(const int x, const int y) const;
+        void setType(TileType type);
         void setCost(const int cost);
         virtual void onVisit(Block* block);
         virtual const string getSymbol() const;

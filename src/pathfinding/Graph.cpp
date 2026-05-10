@@ -80,33 +80,8 @@ void Graph::printGraph() const {
     }
 }
 
-void Graph::drawEdges(int num) {
-    for (auto pair : edgeList) {
-        bool drawEdge = false;
-        drawEdge = num == -1 && pair.first.first->getLastNumVisited() == nullptr && pair.first.second->getLastNumVisited() == nullptr;
-        if (!drawEdge && pair.first.first->getLastNumVisited() != nullptr && pair.first.second->getLastNumVisited() != nullptr) 
-            drawEdge = (pair.first.first->getLastNumVisited()->getNumber() == num && pair.first.second->getLastNumVisited()->getNumber() == num);
-        if (drawEdge) {
-            Vector2 start = pair.first.first->getTile()->getRenderPos();
-            Vector2 end = pair.first.second->getTile()->getRenderPos();
-            Vector2 dir = Vector2Normalize(end - start);
-            int neg = (dir.y == 0) ? 1 : -1;
-            DrawLineEx(start, end, 1.0f, BLACK);
-            DrawTriangle(
-                end,
-                end + dir*-10 + (Vector2){dir.y, dir.x}*-5*neg,
-                end + dir*-10 + (Vector2){dir.y, dir.x}*5*neg,
-                BLACK
-            );
-        }
-    }
-}
-
-void Graph::drawNodes(int num) {
-    for (auto pair : nodeList) {
-        DrawCircle(pair.first.first->getRenderPos().x, pair.first.first->getRenderPos().y, 30, GRAY);
-        
-    }
+const bool Graph::isGraphSolvable() const {
+    return goalNode->getPredEdges().size() > 0;
 }
 
 void constructGraphPath(Graph* g, Node* currNode, const string currPath, Board * board) {

@@ -24,6 +24,7 @@ class ViewAnimation {
         void start();
         void pause();
         void end();
+        void endAbrupt();
         void play();
 };
 

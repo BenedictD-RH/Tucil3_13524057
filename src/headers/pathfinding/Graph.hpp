@@ -55,6 +55,7 @@ class Graph {
         Node* getNode(Tile* tile, NumberTile* numTile) const;
         map<pair<Tile*, NumberTile*>, Node*> getNodeList() const;
         map<pair<Node*, Node*>, Edge*> getEdgeList() const;
+        const bool isGraphSolvable() const;
         void printGraph() const;
         void drawNodes(int num);
         void drawEdges(int num);

@@ -31,6 +31,7 @@ public:
     Entry(const Vector2 &recDim, const string defaultText, const float fontSize, string fontKey, function<void()> onEnter);
     const bool isSelected() const;
     const string getEntryText() const;
+    void setEntryText(const string text);
     void setDefaultText(const string text);
     void setFontSize(const float fontsize);
     void setOnEnterFunc(function<void()> onEnter);

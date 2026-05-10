@@ -4,7 +4,7 @@
 #include "viewElement/Interactable.hpp"
 #include "viewElement/Entry.hpp"
 #include "viewElement/board/BoardView.hpp"
-#include "viewElement/board/PlaybackControl.hpp"
+#include "viewElement/controls/SolverInput.hpp"
 #include "animation/ViewAnimation.hpp"
 #include "animation/camera/CameraManager.hpp"
 #include "animation/camera/View3DCamera.hpp"
@@ -15,12 +15,10 @@ class GUI {
     private:
         CameraManager camManager;
         BoardView* boardView;
-        PlaybackControl* playbackControl;
+        SolverInput boardInput;
     public:
         GUI();
         void loadBoard(Board& board);
-        void loadPlaybackControl();
-        void setBoardSolution(string path);
         void update();
         void render();
 };

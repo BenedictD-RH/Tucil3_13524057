@@ -17,7 +17,7 @@ Entry::Entry(const Vector2 &recDim, const string defaultText, const float fontSi
         DrawRectangle(renderPos.x, renderPos.y, boxWidth, getRenderHeight(), WHITE);
 
         std::string leftOfCursor = entryText.substr(0, cursorPos);
-        float cursorOffsetInText = MeasureTextEx(fontMap[this->fontKey], leftOfCursor.c_str(), fontSizeRender, 1).x;
+        float cursorOffsetInText = MeasureTextEx(getFont(this->fontKey), leftOfCursor.c_str(), fontSizeRender, 1).x;
 
         static float textScrollX = 0;
         if (cursorOffsetInText + textScrollX > boxWidth - padding * 2)
@@ -34,11 +34,11 @@ Entry::Entry(const Vector2 &recDim, const string defaultText, const float fontSi
 
         if (!selected && entryText.empty())
         {
-            DrawTextEx(fontMap[this->fontKey], this->defaultText.c_str(), {renderPos.x + padding, textY}, fontSizeRender, 1, GRAY);
+            DrawTextEx(getFont(this->fontKey), this->defaultText.c_str(), {renderPos.x + padding, textY}, fontSizeRender, 1, GRAY);
         }
         else
         {
-            DrawTextEx(fontMap[this->fontKey], entryText.c_str(), {textX, textY}, fontSizeRender, 1, BLACK);
+            DrawTextEx(getFont(this->fontKey), entryText.c_str(), {textX, textY}, fontSizeRender, 1, BLACK);
         }
 
         cursorBlinkTime += GetFrameTime();
@@ -65,6 +65,10 @@ Entry::Entry(const Vector2 &recDim, const string defaultText, const float fontSi
 
 const string Entry::getEntryText() const { return entryText; }
 const bool Entry::isSelected() const { return selected; }
+void Entry::setEntryText(const string text) { 
+    entryText = text; 
+    cursorPos = text.length(); 
+}
 void Entry::setDefaultText(const string text) { defaultText = text; }
 void Entry::setFontSize(const float fontsize) { fontSize = fontsize; }
 void Entry::setOnEnterFunc(function<void()> onEnter) { onEnterFunc = onEnter; }

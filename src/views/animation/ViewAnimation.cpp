@@ -106,6 +106,10 @@ void View2DAnimation::setFadeAnimation(const float newOpacity, const float durat
 void ViewAnimation::start() { playing = true; }
 void ViewAnimation::pause() { playing = false; }
 void ViewAnimation::end() { ended = true; }
+void ViewAnimation::endAbrupt() { 
+    ended = true;
+    animationEndFunc = [](){};
+}
 void ViewAnimation::play() {
     if (playing) { 
         animationFunc(); 

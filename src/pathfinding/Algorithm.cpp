@@ -44,7 +44,7 @@ bool Path::operator<(const Path& other) const {
 
 Algorithm::Algorithm(Board* board) : totalIterations(0), timeElapsed(0),
                                      solutionFound(false), solutionPath(nullptr), 
-                                     graphRep(constructPathfindingGraph(board)), board(board) {}
+                                     graphRep(constructPathfindingGraph(board)), board(board), start(chrono::steady_clock::now()) {}
 
 Board* Algorithm::getBoard() const { return board; }
 const Graph* Algorithm::getGraph() const { return &graphRep; }
@@ -54,8 +54,10 @@ const bool Algorithm::isSolutionFound() const { return solutionFound; }
 const Path* Algorithm::getSolutionPath() const { return solutionPath; }
 
 void Algorithm::printResults() const {
-    cout<<"Total Iterations: "<<totalIterations<<endl;
-    cout<<"Time Elapsed: "<<timeElapsed<<"ms"<<endl;
-    cout<<"Solution Path: "<<solutionPath->getPathRep()<<endl;
-    cout<<"Total Cost: "<<solutionPath->getTotalCost()<<endl;
+    if (solutionFound) {
+        cout<<"Total Iterations: "<<totalIterations<<endl;
+        cout<<"Time Elapsed: "<<timeElapsed<<"ms"<<endl;
+        cout<<"Solution Path: "<<solutionPath->getPathRep()<<endl;
+        cout<<"Total Cost: "<<solutionPath->getTotalCost()<<endl;
+    }
 }

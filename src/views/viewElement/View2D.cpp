@@ -92,6 +92,7 @@ void View2D::render()
 void View2D::addFont(string fontKey, string fontFilename)
 {
     fontMap[fontKey] = LoadFontEx(fontFilename.c_str(), 36, NULL, 0);
+    fontMap[fontKey + "Small"] = LoadFontEx(fontFilename.c_str(), 25, NULL, 0);
 }
 
 void View2D::unloadFonts()
@@ -104,6 +105,7 @@ void View2D::unloadFonts()
 
 Font View2D::getFont(string fontKey)
 {
+    if (fontKey == "") return GetFontDefault();
     return fontMap.at(fontKey);
 }
 

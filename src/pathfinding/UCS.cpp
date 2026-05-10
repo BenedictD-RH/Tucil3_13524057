@@ -4,6 +4,7 @@
 UCS::UCS(Board* board) : Algorithm(board) {}
 
 void UCS::solve() {
+    if (!graphRep.isGraphSolvable()) return;
     searchQueue.push(Path("", 0, 0, &graphRep));
     while(!searchQueue.empty()) {
         totalIterations++;
@@ -19,6 +20,8 @@ void UCS::solve() {
         }
         if (currPath.getNodeResult() == graphRep.getGoalNode()) {
             solutionPath = new Path(currPath);
+            auto end = chrono::steady_clock::now();
+            timeElapsed = chrono::duration_cast<chrono::milliseconds>(end - start).count();
             solutionFound = true;
             break;
         }

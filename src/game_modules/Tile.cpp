@@ -25,6 +25,8 @@ const string Tile::getSymbol() const {
             return "";
     }
 }
+
+void Tile::setType(TileType type) { this->type = type; }
 void Tile::setCost(const int cost) { this->cost = cost; }
 void Tile::onVisit(Block* block) {
     if (type ==LAVA_TILE)  {

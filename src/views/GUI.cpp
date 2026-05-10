@@ -1,28 +1,20 @@
 #include "../headers/views/GUI.hpp"
 
 
-GUI::GUI() : camManager(CameraManager()), boardView(nullptr), playbackControl(nullptr) {
-    camManager.addCamera("FREE_CAM", View3DCamera({0,25.0f,0.001f}, {0,0,0}, 45.0f));
+GUI::GUI() : camManager(CameraManager()), boardView(nullptr), boardInput(nullptr) {
+    camManager.addCamera("TOP_CAM", View3DCamera({-4,25.0f,0.001f}, {-4,0,0}, 45.0f));
 }
 
 
 void GUI::loadBoard(Board& board) {
-    boardView = new BoardView(board);
+    boardView = new BoardView(board, &camManager.getCamera("TOP_CAM"));
+    boardInput.setBoardView(boardView);
 }
 
-void GUI::loadPlaybackControl() {
-    playbackControl = new PlaybackControl(boardView);
-}
 
-void GUI::setBoardSolution(string path) {
-    if (boardView != nullptr) {
-        loadPlaybackControl();
-        boardView->setSolutionPath(path);
-    }
-}
 
 void GUI::update() {
-    if (playbackControl != nullptr) playbackControl->interactionCheck();
+    boardInput.interactionCheck();
 }
 
 void GUI::render() {
@@ -32,6 +24,6 @@ void GUI::render() {
     DrawGrid(50, 1);
 
     EndMode3D();
-    if (playbackControl != nullptr) playbackControl->render();
+    boardInput.render();
 }
 

@@ -3,8 +3,8 @@
 AStar::AStar(Board* board, Heuristic* heuristic) : Algorithm(board), heuristic(heuristic) {}
 
 void AStar::solve() {
+    if (!graphRep.isGraphSolvable()) return;
     searchQueue.push(Path("", heuristic->calculate(graphRep.getStartNode()), 0, &graphRep));
-    auto start = chrono::system_clock::now();
     while(!searchQueue.empty()) {
         totalIterations++;
         Path currPath = searchQueue.top();
@@ -20,7 +20,7 @@ void AStar::solve() {
         if (currPath.getNodeResult() == graphRep.getGoalNode()) {
             if (solutionPath == nullptr) {
                 solutionPath = new Path(currPath);
-                auto end = chrono::system_clock::now();
+                auto end = chrono::steady_clock::now();
                 timeElapsed = chrono::duration_cast<chrono::milliseconds>(end - start).count();
                 solutionFound = true;
                 break;

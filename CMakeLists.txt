@@ -4,6 +4,14 @@ project(IceSliderSolver LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(FetchContent)
+
+FetchContent_Declare(
+  raylib
+  GIT_REPOSITORY https://github.com/raysan5/raylib.git
+  GIT_TAG        master # Or a specific version like 5.0
+)
+
 find_package(raylib REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.cpp

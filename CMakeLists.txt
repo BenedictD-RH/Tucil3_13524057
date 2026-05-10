@@ -12,7 +12,7 @@ FetchContent_Declare(
   GIT_TAG        master # Or a specific version like 5.0
 )
 
-find_package(raylib REQUIRED)
+FetchContent_MakeAvailable(raylib)
 
 add_executable(${PROJECT_NAME} src/main.cpp
                                src/game_modules/Board.cpp

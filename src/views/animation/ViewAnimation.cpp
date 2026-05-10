@@ -14,7 +14,10 @@ const bool ViewAnimation::isPlaying() const { return playing; }
 const bool ViewAnimation::hasEnded() const { return ended; }
 const bool ViewAnimation::isInteruptable() const { return interuptable; }
 
-
+void ViewAnimation::setFPS(float fps) { 
+    frameProgress = frameProgress*fps/this->fps;
+    this->fps = fps; 
+}
 void ViewAnimation::setAnimationFunc(function<void()> animationFunc) { this->animationFunc = animationFunc; }
 void ViewAnimation::setAnimationEndFunc(function<void()> animationEndFunc) { this->animationEndFunc = animationEndFunc; }
 

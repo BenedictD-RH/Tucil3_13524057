@@ -6,8 +6,8 @@
 
 
 int main() {
-    // Board b(0,0);
-    // b.loadBoard("data/test.txt");
+    Board b(0,0);
+    b.loadBoard("data/test.txt");
     // b.printBoardTiles();
     // b.printBoardCosts();
     // cout<<endl<<endl;
@@ -24,14 +24,16 @@ int main() {
 
     const int screenWidth = 1200;
     const int screenHeight = 800;
-
+    SetTraceLogLevel(LOG_NONE);
     InitWindow(screenWidth, screenHeight, "Ice Slider Solver");
-
+    
     SetTargetFPS(60);
     GUI gui;
-
+    gui.loadBoard(b);
+    gui.setBoardSolution("LURDRDLULUDRDLUDRULDRURDLDRUDLULDRDLDRULURDL");
     while (!WindowShouldClose())
     {
+        gui.update();
         BeginDrawing();
         ClearBackground(RAYWHITE);
         gui.render();

@@ -31,6 +31,11 @@ const bool Board::isOutOfBounds(const int x, const int y) const {
     return x < 0 || x >= col || y < 0 || y >= row;
 }
 
+
+vector<NumberTile*> Board::getNumberTiles() const {
+    return numberTiles;
+}
+
 NumberTile* Board::getNumberTile(const int num) const { 
     auto it = find_if(numberTiles.begin(), numberTiles.end(), [num](NumberTile* numtile) {
         return numtile->getNumber() == num;

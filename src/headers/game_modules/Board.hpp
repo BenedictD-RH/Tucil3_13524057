@@ -20,6 +20,7 @@ class Board {
         Tile* getStartTile() const;
         Tile* getGoalTile() const;
         Block* getBlockState() const;
+        vector<NumberTile*> getNumberTiles() const;
         NumberTile* getNumberTile(const int num) const;
         NumberTile* getNextNumberTile(NumberTile*) const;
         NumberTile* getFinalNumberTile() const;

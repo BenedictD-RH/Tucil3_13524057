@@ -17,6 +17,7 @@ class ViewAnimation {
         const bool isPlaying() const;
         const bool hasEnded() const;
         const bool isInteruptable() const;
+        void setFPS(float fps);
         void setAnimationFunc(function<void()> animationFunc);
         void setAnimationEndFunc(function<void()> animationEndFunc);
         void setWait(const float duration, function<void()> waitEndFunc);

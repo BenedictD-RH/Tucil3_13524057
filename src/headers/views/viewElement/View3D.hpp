@@ -32,6 +32,7 @@ class View3D {
         void setPosX(float x);
         void setPosY(float y);
         void setPosZ(float z);
+        void setColor(Color color);
         void setTransform(const Matrix& m);
         void transform(const Matrix& m);
         void addAnimation(string animKey, View3DAnimation* anim);

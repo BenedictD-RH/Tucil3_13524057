@@ -21,6 +21,9 @@ add_executable(${PROJECT_NAME} src/main.cpp
                                src/views/viewElement/View3D.cpp
                                src/views/viewElement/Interactable.cpp
                                src/views/viewElement/Entry.cpp
+                               src/views/viewElement/board/BoardView.cpp
+                               src/views/viewElement/board/TileView.cpp
+                               src/views/viewElement/board/PlaybackControl.cpp
                                src/views/animation/ViewAnimation.cpp
                                src/views/animation/camera/CameraManager.cpp
                                src/views/animation/camera/CameraMovement.cpp

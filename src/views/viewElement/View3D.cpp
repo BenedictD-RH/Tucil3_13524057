@@ -66,6 +66,10 @@ void View3D::setPosZ(float z) {
     pos.z = z;
 }
 
+void View3D::setColor(Color color) {
+    this->color = color;
+}
+
 void View3D::setTransform(const Matrix& m) {
     transformation = m;
     model.transform = transformation;
